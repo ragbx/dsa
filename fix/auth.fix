@@ -1,0 +1,39 @@
+# identifiant RBX
+copy_field(_id,authnumber)
+
+# 009 : ark BnF
+marc_map(009_,auth_ark_bnf)
+if any_match(auth.ark_bnf, 'catalogue.bnf.fr')
+     add_field(origine, 'BnF')
+else
+     add_field(origine, 'Roubaix')
+end
+
+# On détermine le type d'autorité
+marc_map(200,np)
+marc_map(210,co)
+marc_map(215,sng)
+marc_map(220,fam)
+marc_map(230,tu)
+marc_map(240,sauttit)
+marc_map(250,snc)
+
+
+if exists(np)
+    add_field(type_notice, 'nom_personne')
+elsif exists(co)
+    add_field(type_notice, 'nom_collectivite')
+elsif exists(sng)
+    add_field(type_notice, 'nom_geographique')
+elsif exists(fam)
+    add_field(type_notice, 'famille')
+elsif exists(tu)
+    add_field(type_notice, 'titre_uniforme')
+elsif exists(sauttit)
+    add_field(type_notice, 'auteur_titre')
+elsif exists(snc)
+    add_field(type_notice, 'matiere_nom_commun')
+end
+
+# On ne retient que les champs utiles
+retain(authnumber, type_notice, origine)

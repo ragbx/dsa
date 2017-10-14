@@ -1,0 +1,30 @@
+copy_field(_id,biblionumber)
+
+marc_map(010a,isbn)
+marc_map(011a,issn)
+marc_map(073a,ean)
+
+if exists(ean)
+    add_field(identifiant,'ean')
+elsif exists(issn)
+    add_field(identifiant,'issn')
+elsif exists(isbn)
+    add_field(identifiant,'isbn')
+else
+    add_field(identifiant,'NC')
+end
+
+# On cherche le type de notice en fonction du label position 6 :
+marc_map(LDR_/6,type_notice)
+lookup(type_notice, "fix/lk_type_notice.txt", sep_char:"|", default:NC)
+
+# On cherche à savoir si la notice décrit ou pas des documents patrimoniaux, pour cela on se base sur le champ exemplaire 995h
+marc_map(995h,collection)
+if any_match(collection,"^P")
+    add_field(patrimoine,"oui")
+else
+    add_field(patrimoine,"non")
+end
+
+# On ne retient que les champs suivants :
+retain(numero_biblio, type_notice, identifiant, patrimoine)
