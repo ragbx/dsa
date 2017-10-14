@@ -1,30 +1,132 @@
+# On copie l'id de la notice dans un champs appelé biblionumber (pour qu'il n'y ait pas d'équivoque avec les idenfiants autorités)
 copy_field(_id,biblionumber)
 
+
+# On cherche le type de notice en fonction du label position 6. On transcrira le code en clair à la fin du script.
+marc_map(LDR_/6,type_notice)
+
+# On cherche l'agence de catalogage
+
+
+# On cherche la norme de catlogage
+
+
+# On vérifie que tous les champs obligatoires sont présents (on laisse de côté les particularités des documents cartographiques et des ressources numériques)
+# 001
+marc_map(001,z001)
+if exists(z001)
+    set_field(z001, 'z001_ok')
+else
+    add_field(z001, 'z001_ko')
+end
+
+# 100
+marc_map(100,z100)
+if exists(z100)
+    set_field(z100, 'z100_ok')
+else
+    add_field(z100, 'z100_ko')
+end
+
+# 101
+marc_map(101,z101)
+if exists(z101)
+    set_field(z101, 'z101_ok')
+else
+    add_field(z101, 'z101_ko')
+end
+
+# 200
+marc_map(200,z200)
+if exists(z200)
+    set_field(z200, 'z200_ok')
+else
+    add_field(z200, 'z200_ko')
+end
+
+# 801
+marc_map(801,z801)
+if exists(z801)
+    set_field(z801, 'z801_ok')
+else
+    add_field(z801, 'z801_ko')
+end
+
+
+# On vérifie la présence de points d'accès :
+marc_map(4.., bloc_liens.$append)
+if exists(bloc_liens)
+    set_field(bloc_liens, 'bloc_liens_ok')
+else
+    add_field(bloc_liens, 'bloc_liens_ko')
+end
+
+marc_map(5.., bloc_titres.$append)
+if exists(bloc_titres)
+    set_field(bloc_titres, 'bloc_titres_ok')
+else
+    add_field(bloc_titres, 'bloc_titres_ko')
+end
+
+marc_map(6.., bloc_indexation.$append)
+if exists(bloc_indexation)
+    set_field(bloc_indexation, 'bloc_indexation_ok')
+else
+    add_field(bloc_indexation, 'bloc_indexation_ko')
+end
+
+marc_map(7.., bloc_responsabilites.$append)
+if exists(bloc_responsabilites)
+    set_field(bloc_responsabilites, 'bloc_responsabilites_ok')
+else
+    add_field(bloc_responsabilites, 'bloc_responsabilites_ko')
+end
+
+
+
+# On vérifie la présence d'identifiants
+# On copie les champs marc contenant l'isbn, l'ark bnf, l'issn et l'ean
 marc_map(010a,isbn)
 marc_map(011a,issn)
+marc_map(033a,ark_bnf)
 marc_map(073a,ean)
 
-if exists(ean)
-    add_field(identifiant,'ean')
+# On crée un champ identifiant dans lequel on indique si la notice dispose d'un identifiant sur lequel on peut s'appuyer et si oui lequel
+# On présuppose que ark_bnf > issn > ean > isbn
+if exists(ark_bnf)
+    add_field(identifiant,'ark_bnf')
 elsif exists(issn)
     add_field(identifiant,'issn')
+elsif exists(ean)
+    add_field(identifiant,'ean')
 elsif exists(isbn)
     add_field(identifiant,'isbn')
 else
     add_field(identifiant,'NC')
 end
 
-# On cherche le type de notice en fonction du label position 6 :
-marc_map(LDR_/6,type_notice)
-lookup(type_notice, "fix/lk_type_notice.txt", sep_char:"|", default:NC)
 
-# On cherche à savoir si la notice décrit ou pas des documents patrimoniaux, pour cela on se base sur le champ exemplaire 995h
-marc_map(995h,collection)
-if any_match(collection,"^P")
-    add_field(patrimoine,"oui")
+# On vérifie la présence d'une date de publication 100a/9-12
+marc_map(100a/9-12,'z100datepub')
+if exists(z100datepub)
+    set_field(z100datepub, 'z100datepub_ok')
 else
-    add_field(patrimoine,"non")
+    add_field(z100datepub, 'z100datepub_ko')
 end
 
-# On ne retient que les champs suivants :
-retain(numero_biblio, type_notice, identifiant, patrimoine)
+# On cherche à savoir si la notice décrit ou pas des documents patrimoniaux, pour cela on se base sur le champ exemplaire 995h
+# Ceci est important à ROubaix : on choisit de protéger nos notices de documents patrimoniaux et de ne pas les écraser par des notices de la BnF
+marc_map(995h,collection)
+if any_match(collection,"^P")
+    add_field(patrimoine,"patrimonial")
+else
+    add_field(patrimoine,"non_patrimonial")
+end
+
+
+# On transcrira le code du type de notice du label grâce à la fonction lookup et à un fichier de correspondances "fix/lk_type_notice.txt"
+lookup(type_notice, "fix/lk_type_notice.txt", sep_char:"|", default:NC)
+
+
+# On retient les champs suivants :
+retain(biblionumber, bloc_indexation, bloc_liens, bloc_responsabilites, bloc_titres, identifiant, patrimoine, type_notice, z001, z100, z100datepub, z101, z200, z801)
