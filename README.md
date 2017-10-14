@@ -17,7 +17,8 @@ Principe : on donne des données en entrée (par exemple sous forme de fichier m
 ce que l'on va faire : produire à partir d'un fichier marc un fichier csv comportant quelques colonnes essentielles qu'on analysera via un tableur.
 
 #### Etapes :
-1. On a exporté au préalable du SIGB les notices bibliographiques sous forme de fichier unimarc ISO 2709, que l'on nomme [input/biblio.mrc](https://github.com/medrbx/dsa/blob/master/input/biblio.mrc). Ici, on utilisera un fichier représantant seulement 5 % des notices bibliographiques de Roubaix, pour accéler les temps de traitement.
+1. On a exporté au préalable du SIGB les notices bibliographiques sous forme de fichier unimarc ISO 2709 encodé en UTF-8, que l'on nomme [input/biblio.mrc](https://github.com/medrbx/dsa/blob/master/input/biblio.mrc).
+Ici, on utilisera un fichier représantant seulement 5 % des notices bibliographiques de Roubaix, pour accélerer les temps de traitement.
 
 2. On crée un fichier fix pour Catmandu, que l'on nommera [fix/biblio.fix](https://github.com/medrbx/dsa/blob/master/fix/biblio.fix).
 
@@ -33,7 +34,7 @@ $ catmandu convert -v MARC --fix fix/biblio.fix to CSV < input/biblio.mrc > outp
 ce que l'on va faire : produire à partir d'un fichier marc un fichier csv comportant quelques colonnes essentielles qu'on analysera via un tableur.
 
 #### Etapes :
-1. On a exporté au préalable du SIGB les notices autoprités sous forme de fichier unimarc ISO 2709, que l'on nomme [input/auth.mrc](https://github.com/medrbx/dsa/blob/master/input/auth.mrc). Ici, on utilisera un fichier represantant seulement 5 % des notices autorités de Roubaix, pour accéler les temps de traitement.
+1. On a exporté au préalable du SIGB les notices autorités sous forme de fichier unimarc ISO 2709 encodé en UTF-8, que l'on nomme [input/auth.mrc](https://github.com/medrbx/dsa/blob/master/input/auth.mrc). Ici, on utilisera un fichier represantant seulement 5 % des notices autorités de Roubaix, pour accélerer les temps de traitement.
 
 
 2. On crée un fichier fix pour Catmandu, que l'on nommera [fix/auth.fix](https://github.com/medrbx/dsa/blob/master/fix/auth.fix).

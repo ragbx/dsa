@@ -1,15 +1,76 @@
-# identifiant RBX
+# On copie l'id de la notice dans un champs appelé authnumber (pour qu'il n'y ait pas d'équivoque avec les idenfiants bibliographiques)
 copy_field(_id,authnumber)
 
-# 009 : ark BnF
-marc_map(009_,auth_ark_bnf)
-if any_match(auth.ark_bnf, 'catalogue.bnf.fr')
-     add_field(origine, 'BnF')
+# On cherche le type de notice en fonction du label position 9 => on constatera qu'à Roubaix, cette partie du label n'est pas complétée.
+marc_map(LDR_/9,type_entite)
+if exists(type_entite)
+    lookup(type_entite, "fix/lk_type_entite.txt", sep_char:"|", default:NC)
 else
-     add_field(origine, 'Roubaix')
+    add_field(type_entite, 'NA')
 end
 
-# On détermine le type d'autorité
+
+# On cherche l'agence de catalogage
+if marc_match(801b,'595126101')
+	add_field(agence_cat, 'Roubaix')
+elsif marc_match(801b,'FR-751131015')
+	add_field(agence_cat, 'BnF')
+else
+	add_field(agence_cat, 'Autre')
+end
+
+
+# On vérifie que tous les champs obligatoires sont présents
+# 001
+marc_map(001,za001)
+if exists(za001)
+    set_field(za001, 'za001_ok')
+else
+    add_field(za001, 'za001_ko')
+end
+
+# 100
+marc_map(100,za100)
+if exists(za100)
+    set_field(za100, 'za100_ok')
+else
+    add_field(za100, 'za100_ko')
+end
+
+# 152
+marc_map(101,za152)
+if exists(za152)
+    set_field(za152, 'za152_ok')
+else
+    add_field(za152, 'za152_ko')
+end
+
+# 2XX
+marc_map(2..,za2XX)
+if exists(za2XX)
+    set_field(za2XX, 'za2XX_ok')
+else
+    add_field(za2XX, 'za2XX_ko')
+end
+
+# 801
+marc_map(801,za801)
+if exists(za801)
+    set_field(za801, 'za801_ok')
+else
+    add_field(za801, 'za801_ko')
+end
+
+
+# 009 : ark BnF => on vérifie la présence d'un ark bnf (il est en 009, devrait être en 033a...)
+marc_map(009_,ark_bnf)
+if any_match(ark_bnf, 'catalogue.bnf.fr')
+     set_field(ark_bnf, 'BnF')
+else
+     add_field(ark_bnf, 'Roubaix')
+end
+
+# On détermine le type d'autorité (vu que le label ne nous apprend pas grand-chose...)
 marc_map(200,np)
 marc_map(210,co)
 marc_map(215,sng)
@@ -18,22 +79,21 @@ marc_map(230,tu)
 marc_map(240,sauttit)
 marc_map(250,snc)
 
-
 if exists(np)
-    add_field(type_notice, 'nom_personne')
+    add_field(type_autorite, 'nom_personne')
 elsif exists(co)
-    add_field(type_notice, 'nom_collectivite')
+    add_field(type_autorite, 'nom_collectivite')
 elsif exists(sng)
-    add_field(type_notice, 'nom_geographique')
+    add_field(type_autorite, 'nom_geographique')
 elsif exists(fam)
-    add_field(type_notice, 'famille')
+    add_field(type_autorite, 'famille')
 elsif exists(tu)
-    add_field(type_notice, 'titre_uniforme')
+    add_field(type_autorite, 'titre_uniforme')
 elsif exists(sauttit)
-    add_field(type_notice, 'auteur_titre')
+    add_field(type_autorite, 'auteur_titre')
 elsif exists(snc)
-    add_field(type_notice, 'matiere_nom_commun')
+    add_field(type_autorite, 'matiere_nom_commun')
 end
 
-# On ne retient que les champs utiles
-retain(authnumber, type_notice, origine)
+# On retient les champs suivants :
+retain(agence_cat, ark_bnf, authnumber, type_autorite, type_entite, za001, za100, za152, za2XX, za801)
