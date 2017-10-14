@@ -1,0 +1,8 @@
+# Fichier de configuration qui a pour de résoudre les pb de compatibilité avec Elasticsearch >= 2.0
+# voir https://github.com/LibreCat/Catmandu-Store-Elasticsearch#compatibility
+---
+store:
+  ES:
+    package: ElasticSearch
+    options:
+      key_prefix: rbx_
