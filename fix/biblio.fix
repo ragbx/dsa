@@ -6,10 +6,32 @@ copy_field(_id,biblionumber)
 marc_map(LDR_/6,type_notice)
 
 # On cherche l'agence de catalogage
-
-
+if marc_match(801b,'595126101')
+	add_field(agence_cat, 'Roubaix')
+elsif marc_match(801b,'FR-751131015')
+	add_field(agence_cat, 'BnF')
+elsif marc_match(801b,'CDMAIL')
+	add_field(agence_cat, 'CDMAIL')
+elsif marc_match(801b,'COLACO')
+	add_field(agence_cat, 'COLACO')
+elsif marc_match(801b,'ADAV')
+	add_field(agence_cat, 'ADAV')	
+else	
+	add_field(agence_cat, 'Autre')
+end
+	
 # On cherche la norme de catlogage
-
+if marc_match(801g,'AFNOR')
+	add_field(norme_cat, 'AFNOR')
+elsif marc_match(801b,'afnor')
+	add_field(norme_cat, 'AFNOR')
+elsif marc_match(801b,'rda')
+	add_field(norme_cat, 'RDA')
+elsif marc_match(801b,'RDA')
+	add_field(norme_cat, 'RDA')	
+else	
+	add_field(norme_cat, 'Autre')
+end
 
 # On vérifie que tous les champs obligatoires sont présents (on laisse de côté les particularités des documents cartographiques et des ressources numériques)
 # 001
@@ -83,7 +105,6 @@ else
 end
 
 
-
 # On vérifie la présence d'identifiants
 # On copie les champs marc contenant l'isbn, l'ark bnf, l'issn et l'ean
 marc_map(010a,isbn)
@@ -129,4 +150,4 @@ lookup(type_notice, "fix/lk_type_notice.txt", sep_char:"|", default:NC)
 
 
 # On retient les champs suivants :
-retain(biblionumber, bloc_indexation, bloc_liens, bloc_responsabilites, bloc_titres, identifiant, patrimoine, type_notice, z001, z100, z100datepub, z101, z200, z801)
+retain(agence_cat, biblionumber, bloc_indexation, bloc_liens, bloc_responsabilites, bloc_titres, identifiant, norme_cat, patrimoine, type_notice, z001, z100, z100datepub, z101, z200, z801)
