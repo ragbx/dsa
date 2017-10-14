@@ -12,11 +12,11 @@ end
 
 # On cherche l'agence de catalogage
 if marc_match(801b,'595126101')
-	add_field(agence_cat, 'Roubaix')
+    add_field(agence_cat, 'Roubaix')
 elsif marc_match(801b,'FR-751131015')
-	add_field(agence_cat, 'BnF')
+    add_field(agence_cat, 'BnF')
 else
-	add_field(agence_cat, 'Autre')
+    add_field(agence_cat, 'Autre')
 end
 
 
