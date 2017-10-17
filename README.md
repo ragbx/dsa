@@ -1,13 +1,26 @@
 # Les datas sans aléas : analyser des métadonnées Marc avec Catmandu
 
+> Attention ceci reste un work in progress, reste en particulier à faire :
+> - en introduction, expliquer comment fonctionne Catmandu
+> - exemple 1 : parler davantage du contrôle des lacunes
+> - exemple 3 : tableau de bord actuellement un peu simple, à développer
+
 ## Problématique
 Une fois que l'on sait ce que l'on doit chercher / vérifier au sein de nos notices, concrètement comment faire ? quels outils utiliser, sachant que les SIGB ne proposent pas nécessairement les fonctionnalités adéquates ?
-=> on va partir de l'hypothèse qu'on est en mesure d'extraire du SIGB un fichier marc (ISO ou MARCXML propre), pour l'analyser grâce à Catmandu
+=> on va partir de l'hypothèse qu'on est en mesure d'extraire du SIGB un fichier marc (ISO ou MARCXML) propre, auquel on va faire subir quelques transformations grâce à Catmandu pour effectuer ensuite une analyse avec des outils statistiques (tableur, etc...)
 
 ## Catmandu ?
 Un ETL spécifique aux formats et protocoles utilisés en bibliothèques.
 
-Principe : on donne des données en entrée (par exemple sous forme de fichier marc), on indique quels transformations appliquer, on récupère des données en sortie, que l'on va pouvoir intégrer dans un autre outil
+### Principe :
+- on donne des données en entrée (par exemple sous forme de fichier csv, xml, marc (iso ou xml), ...),
+
+- on indique éventuellement quels transformations appliquer,
+
+- on récupère des données en sortie, que l'on va pouvoir intégrer dans un autre outil
+
+### Exemples :
+
 
 **TO DO : illustrer concrètement**
 
@@ -68,4 +81,4 @@ Réaliser les opérations d'alignement peuvent être complexes à réaliser au s
 
 Exemple : pour chaque notice du catalogue, lancer une requête sur le service SRU de la BnF (encore version bêta...) pour récupérer un identifiant ark et l'ajouter à la notice locale.
 
-** TO DO : mettre un lien vers un tel script (qui sera en perl) => pas le lieu pour discuter pour cela **
+** TO DO : mettre un lien vers un tel script (qui sera en perl) => un peu compliqué pour être expliqué lors de cette journée **
