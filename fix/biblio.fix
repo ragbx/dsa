@@ -19,20 +19,8 @@ elsif marc_match(801b,'ADAV')
 else	
 	add_field(agence_cat, 'Autre')
 end
-	
-# On cherche la norme de catlogage
-if marc_match(801g,'AFNOR')
-	add_field(norme_cat, 'AFNOR')
-elsif marc_match(801b,'afnor')
-	add_field(norme_cat, 'AFNOR')
-elsif marc_match(801b,'rda')
-	add_field(norme_cat, 'RDA')
-elsif marc_match(801b,'RDA')
-	add_field(norme_cat, 'RDA')	
-else	
-	add_field(norme_cat, 'Autre')
-end
 
+	
 # On vérifie que tous les champs obligatoires sont présents (on laisse de côté les particularités des documents cartographiques et des ressources numériques)
 # 001
 marc_map(001,z001)
@@ -150,4 +138,4 @@ lookup(type_notice, "fix/lk_type_notice.txt", sep_char:"|", default:NC)
 
 
 # On retient les champs suivants :
-retain(agence_cat, biblionumber, bloc_indexation, bloc_liens, bloc_responsabilites, bloc_titres, identifiant, norme_cat, patrimoine, type_notice, z001, z100, z100datepub, z101, z200, z801)
+retain(agence_cat, biblionumber, bloc_indexation, bloc_liens, bloc_responsabilites, bloc_titres, identifiant, patrimoine, type_notice, z001, z100, z100datepub, z101, z200, z801)

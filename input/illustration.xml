@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ListeFilm>
+ <Film id="1">
+  <Titre>Invictus</Titre>
+  <Realisateur>Clint Eastwood</Realisateur>
+ </Film>
+ <Film id="2">
+  <Titre>Sumo</Titre>
+  <Realisateur>Sharon Maymon</Realisateur>
+ </Film>
+ <Film id="3">
+  <Titre>Gainsbourg</Titre>
+  <Realisateur>Joann Sfar</Realisateur>
+ </Film>
+ <Film id="4">
+  <Titre>Lebanon</Titre>
+  <Realisateur>Samuel Maoz</Realisateur>
+ </Film>
+ <Film id="5">
+  <Titre>Planet 51</Titre>
+  <Realisateur>Jorge Blanco</Realisateur>
+ </Film>
+</ListeFilm>
