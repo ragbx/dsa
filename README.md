@@ -1,29 +1,41 @@
 # Les datas sans aléas : analyser des métadonnées Marc avec Catmandu
 
-> Attention ceci reste un work in progress, reste en particulier à faire :
-> - en introduction, expliquer comment fonctionne Catmandu
-> - exemple 1 : parler davantage du contrôle des lacunes
-> - exemple 3 : tableau de bord actuellement un peu simple, à développer
-
 ## Problématique
 Une fois que l'on sait ce que l'on doit chercher / vérifier au sein de nos notices, concrètement comment faire ? quels outils utiliser, sachant que les SIGB ne proposent pas nécessairement les fonctionnalités adéquates ?
 => on va partir de l'hypothèse qu'on est en mesure d'extraire du SIGB un fichier marc (ISO ou MARCXML) propre, auquel on va faire subir quelques transformations grâce à Catmandu pour effectuer ensuite une analyse avec des outils statistiques (tableur, etc...)
 
 ## Catmandu ?
-Un ETL spécifique aux formats et protocoles utilisés en bibliothèques.
+Un outil de gestion de données spécifique aux formats et protocoles utilisés en bibliothèques, travail conjoint de développeurs issus des universités de Gand, Lund et Bielefeld. Pour aller plus loin (découvertes des fonctionnalités, installation, documentation technique, ...), voir le [site web du projet](http://librecat.org/).
 
 ### Principe :
 - on donne des données en entrée (par exemple sous forme de fichier csv, xml, marc (iso ou xml), ...),
 
-- on indique éventuellement quels transformations appliquer,
+- on indique éventuellement quelles transformations appliquer,
 
 - on récupère des données en sortie, que l'on va pouvoir intégrer dans un autre outil
 
-### Exemples :
+### Pour mieux comprendre :
+On entre un fichier MARC iso 2709 que l'on transforme en YAML.
+```bash
+$ catmandu convert MARC --type RAW to YAML < input/biblio.mrc
+```
+
+Même exemple que précédemment, mais on applique une transformation : on va extraire le titre de chaque document.
+```bash
+$ catmandu convert MARC --type RAW to YAML --fix 'marc_map(200a,titre)' < input/biblio.mrc
+```
+Pour cela, on utilise un langage simple, appelé "fix", dont on peut trouver le détail en [ligne](http://librecat.org/Catmandu/#fixes-cheat-sheet).
 
 
-**TO DO : illustrer concrètement**
+On indique qu'on ne souhaite retenir que les champs '_id' et 'titre' :
+```bash
+$ catmandu convert MARC --type RAW to YAML --fix 'marc_map(200a,titre) ; retain(_id,titre)' < input/biblio.mrc
+```
 
+Pour simplifier l'écriture, on peut regrouper les commandes fix dans un fichier :
+```bash
+$ catmandu convert MARC --type RAW to YAML --fix fix/demo.fix < input/biblio.mrc
+```
 
 ## Trois exemples, à travers trois questions simples :
 ### Exemple 1 : Comment puis-je savoir si mes notices comportent des identifiants qui me permettront d'effectuer un alignement avec les données de la BnF ?
