@@ -21,12 +21,14 @@ end
 
 
 # On vérifie que tous les champs obligatoires sont présents
+add_field(zones_obligatoires,'ok')
 # 001
 marc_map(001,za001)
 if exists(za001)
     set_field(za001, 'za001_ok')
 else
     add_field(za001, 'za001_ko')
+    set_field(zones_obligatoires,'ko')
 end
 
 # 100
@@ -35,6 +37,7 @@ if exists(za100)
     set_field(za100, 'za100_ok')
 else
     add_field(za100, 'za100_ko')
+    set_field(zones_obligatoires,'ko')
 end
 
 # 152
@@ -43,6 +46,7 @@ if exists(za152)
     set_field(za152, 'za152_ok')
 else
     add_field(za152, 'za152_ko')
+    set_field(zones_obligatoires,'ko')
 end
 
 # 2XX
@@ -51,6 +55,7 @@ if exists(za2XX)
     set_field(za2XX, 'za2XX_ok')
 else
     add_field(za2XX, 'za2XX_ko')
+    set_field(zones_obligatoires,'ko')
 end
 
 # 801
@@ -59,6 +64,7 @@ if exists(za801)
     set_field(za801, 'za801_ok')
 else
     add_field(za801, 'za801_ko')
+    set_field(zones_obligatoires,'ko')
 end
 
 
@@ -96,4 +102,4 @@ elsif exists(snc)
 end
 
 # On retient les champs suivants :
-retain(agence_cat, ark_bnf, authnumber, type_autorite, type_entite, za001, za100, za152, za2XX, za801)
+retain(agence_cat, ark_bnf, authnumber, type_autorite, type_entite, za001, za100, za152, za2XX, za801, zones_obligatoires)

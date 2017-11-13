@@ -7,27 +7,29 @@ marc_map(LDR_/6,type_notice)
 
 # On cherche l'agence de catalogage
 if marc_match(801b,'595126101')
-	add_field(agence_cat, 'Roubaix')
+    add_field(agence_cat, 'Roubaix')
 elsif marc_match(801b,'FR-751131015')
-	add_field(agence_cat, 'BnF')
+    add_field(agence_cat, 'BnF')
 elsif marc_match(801b,'CDMAIL')
-	add_field(agence_cat, 'CDMAIL')
+    add_field(agence_cat, 'CDMAIL')
 elsif marc_match(801b,'COLACO')
-	add_field(agence_cat, 'COLACO')
+    add_field(agence_cat, 'COLACO')
 elsif marc_match(801b,'ADAV')
-	add_field(agence_cat, 'ADAV')	
-else	
-	add_field(agence_cat, 'Autre')
+    add_field(agence_cat, 'ADAV')    
+else    
+    add_field(agence_cat, 'Autre')
 end
 
-	
+    
 # On vérifie que tous les champs obligatoires sont présents (on laisse de côté les particularités des documents cartographiques et des ressources numériques)
+add_field(zones_obligatoires,'ok')
 # 001
 marc_map(001,z001)
 if exists(z001)
     set_field(z001, 'z001_ok')
 else
     add_field(z001, 'z001_ko')
+    set_field(zones_obligatoires,'ko')
 end
 
 # 100
@@ -36,6 +38,7 @@ if exists(z100)
     set_field(z100, 'z100_ok')
 else
     add_field(z100, 'z100_ko')
+    set_field(zones_obligatoires,'ko')
 end
 
 # 101
@@ -44,6 +47,7 @@ if exists(z101)
     set_field(z101, 'z101_ok')
 else
     add_field(z101, 'z101_ko')
+    set_field(zones_obligatoires,'ko')
 end
 
 # 200
@@ -52,6 +56,7 @@ if exists(z200)
     set_field(z200, 'z200_ok')
 else
     add_field(z200, 'z200_ko')
+    set_field(zones_obligatoires,'ko')
 end
 
 # 801
@@ -60,12 +65,15 @@ if exists(z801)
     set_field(z801, 'z801_ok')
 else
     add_field(z801, 'z801_ko')
+    set_field(zones_obligatoires,'ko')
 end
 
 
 # On vérifie la présence de points d'accès :
+
 marc_map(4.., bloc_liens.$append)
 if exists(bloc_liens)
+    add_field(point_acces.$append,'4XX')
     set_field(bloc_liens, 'bloc_liens_ok')
 else
     add_field(bloc_liens, 'bloc_liens_ko')
@@ -73,6 +81,7 @@ end
 
 marc_map(5.., bloc_titres.$append)
 if exists(bloc_titres)
+    add_field(point_acces.$append,'5XX')   
     set_field(bloc_titres, 'bloc_titres_ok')
 else
     add_field(bloc_titres, 'bloc_titres_ko')
@@ -80,6 +89,7 @@ end
 
 marc_map(6.., bloc_indexation.$append)
 if exists(bloc_indexation)
+    add_field(point_acces.$append,'6XX')
     set_field(bloc_indexation, 'bloc_indexation_ok')
 else
     add_field(bloc_indexation, 'bloc_indexation_ko')
@@ -87,6 +97,7 @@ end
 
 marc_map(7.., bloc_responsabilites.$append)
 if exists(bloc_responsabilites)
+    add_field(point_acces.$append,'7XX')
     set_field(bloc_responsabilites, 'bloc_responsabilites_ok')
 else
     add_field(bloc_responsabilites, 'bloc_responsabilites_ko')
@@ -138,4 +149,4 @@ lookup(type_notice, "fix/lk_type_notice.txt", sep_char:"|", default:NC)
 
 
 # On retient les champs suivants :
-retain(agence_cat, biblionumber, bloc_indexation, bloc_liens, bloc_responsabilites, bloc_titres, identifiant, patrimoine, type_notice, z001, z100, z100datepub, z101, z200, z801)
+retain(agence_cat, biblionumber, bloc_indexation, bloc_liens, bloc_responsabilites, bloc_titres, identifiant, patrimoine, type_notice, z001, z100, z100datepub, z101, z200, z801, point_acces, zones_obligatoires)
