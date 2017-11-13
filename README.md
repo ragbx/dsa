@@ -91,6 +91,4 @@ On obtient le tableau de bord suivant :
 ## Pour aller plus loin : Catmandu comme outil de prototypage
 Réaliser les opérations d'alignement peuvent être complexes à réaliser au sein d'un SIGB, on peut en revanche réaliser des prototypes à l'aide de Catmandu.
 
-Exemple : pour chaque notice du catalogue, lancer une requête sur le service SRU de la BnF (encore version bêta...) pour récupérer un identifiant ark et l'ajouter à la notice locale.
-
-** TO DO : mettre un lien vers un tel script (qui sera en perl) => un peu compliqué pour être expliqué lors de cette journée **
+Exemple : pour chaque notice du catalogue, lancer une requête sur le service SRU de la BnF pour récupérer un identifiant ark. Voir le script [bin/getArkBySru.pl](https://github.com/medrbx/dsa/blob/master/bin/getArkBySru.pl)
