@@ -1,5 +1,17 @@
 #! /usr/bin/perl
 
+=pod
+
+=encoding UTF-8
+
+=head1 DESCRIPTION
+
+Ce script prend en entrée un fichier MARC ISO 2709.
+Pour chaque notice, on extrait via Catamndu l'isbn et / ou l'ean.
+On effectue ensuite via Catmandu une recherche sur le serveur SRU de la BnF (avec pour clé de recherche soit l'isbn, soit l'ean) et, en cas de récupération de notices, on extrait de celles-ci l'identifiant ark.
+
+=cut
+
 use strict;
 use warnings;
 use Catmandu;

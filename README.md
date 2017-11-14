@@ -6,6 +6,7 @@ Une fois que l'on sait ce que l'on doit chercher / vérifier au sein de nos noti
 
 ## Catmandu ?
 Un outil de gestion de données spécifique aux formats et protocoles utilisés en bibliothèques, travail conjoint de développeurs issus des universités de Gand, Lund et Bielefeld. Pour aller plus loin (découvertes des fonctionnalités, installation, documentation technique, ...), voir le [site web du projet](http://librecat.org/).
+Techniquement, il s'agit d'une série de modules Perl, que l'on peut utiliser soit en ligne de commande, soit à l'intérieur de scripts Perl.
 
 ### Principe :
 - on donne des données en entrée (par exemple sous forme de fichier csv, xml, marc (iso ou xml), ...),
@@ -59,7 +60,8 @@ $ catmandu convert -v MARC --fix fix/biblio.fix to CSV < input/biblio.mrc > outp
 ce que l'on va faire : produire à partir d'un fichier marc un fichier csv comportant quelques colonnes essentielles qu'on analysera via un tableur.
 
 #### Etapes :
-1. On a exporté au préalable du SIGB les notices autorités sous forme de fichier unimarc ISO 2709 encodé en UTF-8, que l'on nomme [input/auth.mrc](https://github.com/medrbx/dsa/blob/master/input/auth.mrc). Ici, on utilisera un fichier represantant seulement 5 % des notices autorités de Roubaix, pour accélerer les temps de traitement.
+1. On a exporté au préalable du SIGB les notices autorités sous forme de fichier unimarc ISO 2709 encodé en UTF-8, que l'on nomme [input/auth.mrc](https://github.com/medrbx/dsa/blob/master/input/auth.mrc).
+Ici, on utilisera un fichier represantant seulement 5 % des notices autorités de Roubaix, pour accélerer les temps de traitement.
 
 
 2. On crée un fichier fix pour Catmandu, que l'on nommera [fix/auth.fix](https://github.com/medrbx/dsa/blob/master/fix/auth.fix).

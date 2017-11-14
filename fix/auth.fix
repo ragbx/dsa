@@ -1,25 +1,7 @@
 # On copie l'id de la notice dans un champs appelé authnumber (pour qu'il n'y ait pas d'équivoque avec les idenfiants bibliographiques)
 copy_field(_id,authnumber)
 
-# On cherche le type de notice en fonction du label position 9 => on constatera qu'à Roubaix, cette partie du label n'est pas complétée.
-marc_map(LDR_/9,type_entite)
-if exists(type_entite)
-    lookup(type_entite, "fix/lk_type_entite.txt", sep_char:"|", default:NC)
-else
-    add_field(type_entite, 'NA')
-end
-
-
-# On cherche l'agence de catalogage
-if marc_match(801b,'595126101')
-    add_field(agence_cat, 'Roubaix')
-elsif marc_match(801b,'FR-751131015')
-    add_field(agence_cat, 'BnF')
-else
-    add_field(agence_cat, 'Autre')
-end
-
-
+# On en profite pour effectuer un peu de contrôle qualité (contrôle des lacunes)
 # On vérifie que tous les champs obligatoires sont présents
 add_field(zones_obligatoires,'ok')
 # 001
@@ -66,6 +48,26 @@ else
     add_field(za801, 'za801_ko')
     set_field(zones_obligatoires,'ko')
 end
+
+
+# On cherche le type de notice en fonction du label position 9 => on constatera qu'à Roubaix, cette partie du label n'est pas complétée.
+marc_map(LDR_/9,type_entite)
+if exists(type_entite)
+    lookup(type_entite, "fix/lk_type_entite.txt", sep_char:"|", default:NC)
+else
+    add_field(type_entite, 'NA')
+end
+
+
+# On cherche l'agence de catalogage
+if marc_match(801b,'595126101')
+    add_field(agence_cat, 'Roubaix')
+elsif marc_match(801b,'FR-751131015')
+    add_field(agence_cat, 'BnF')
+else
+    add_field(agence_cat, 'Autre')
+end
+
 
 
 # 009 : ark BnF => on vérifie la présence d'un ark bnf (il est en 009, devrait être en 033a...)
